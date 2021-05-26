@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts :: header"></head>
+<style>
+.padding-0 {
+	padding-right: 0;
+	padding-left: 1;
+}
+
+div.form-group {
+  position: absolute;
+  left: 80px;
+  width: 80px;
+  height: 120px;
+  
+}
+input[type="number"] {
+  width: 4em;
+}
+</style>
+<body>
+
+	<div class="container">
+
+		<nav th:replace="layouts :: nav"></nav>
+		<h3 align="center">Products</h3>
+<div class="form-group" id="filters">
+					<form
+						th:action="@{/products(minPrice=${minPrice},maxPrice=${maxPrice})}">
+
+					<p><h6>Filter by price</h6>	</p><input type="number" name="minPrice" id="minPrice" size="50"
+							th:value="${minPrice}" required />
+							<br> <input type="number"
+							name="maxPrice" id="maxPrice" size="50" th:value="${maxPrice}"
+							required /> </br>
+							<input type="submit" class="btn btn-info btn btn-sm"
+							value="Search" />
+
+					</form>
+				</div>
+	
+			
+
+			<div class="grid-container" id="products">
+
+				<div class="row card-deck" th:each="product : ${products}">
+					<div class="col-lg-4 col-md-6 mb-4">
+
+						<div class="card text-center">
+							<div class="card-header">
+								<h4>
+									<p th:text="*{product.name}"></p>
+								</h4>
+							</div>
+
+							<div class="card-body">
+								<img class="card-img-top" th:src="@{${product.imageUrl}}"
+									width="25" height="60" />
+								<h5 class="card-title">
+									<p th:text="${{product.price}}"></p>
+								</h5>
+
+								<p th:text="*{product.description}"></p>
+							</div>
+
+							<div class="row">
+								<div class="col-4 padding-0">
+									<input type="number" min="0" class="form-control"
+										th:value="*{product.quantity}">
+								</div>
+								<div class="row">
+									<div class="col-4 padding-0">
+										<input type="hidden" th:text="*{product.productId}">
+										<!-- 								<input type="hidden" th:text="${carts.cartId}"> -->
+
+									</div>
+									<!--  <input type="hidden" class="form-control"
+											th:field="${products.productId}"> -->
+
+									<div class="col-4 padding-0">
+
+										<form
+											th:action="@{products/add/(id=${product.productId},qty=${product.quantity})}"
+											method="post">
+											<!-- 								
+<!-- 										(id=${product.productId},qty=${product.quantity}) -->
+
+											<button type="submit" class="btn btn-primary">Add To
+												Cart</button>
+
+										</form>
+										<div class="col-4 padding-0">
+
+											<a th:href="@{products/update(id=${product.productId})}"
+												class="btn btn-primary">Update</a> <a
+												th:href="@{products/delete(id=${product.productId})}"
+												class="btn btn-primary">Delete</a> </a>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+</body>
+
+</html>
